@@ -1,0 +1,26 @@
+name: Azure Lab Deployment
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deploy-lab:
+    name: Connect to Azure
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Verify Azure connection
+        run: |
+          echo "Azure account:"
+          az account show --output table
+
+          echo "Resource groups:"
+          az group list --output table
